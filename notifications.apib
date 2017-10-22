@@ -1,0 +1,46 @@
+# Group Notifications
+
+## Notifications [/users/{user_id}/notifications]
+
++ Parameters
+
+    + user_id: `34` (required, number|string) - The user ID or 'me'.
+
+### Get notifications [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"notifications":[{"id":276,"message":"Du har lagts till i en ny uppf\u00f6ljning.","is_read":false,"followup":{"id":51,"name":"Styckesuppf\u00f6ljning","start_date":"2016-08-29T00:00:00+0000","end_date":"2016-09-30T00:00:00+0000","type":"quantity","status":"published"},"created":"2016-08-30T07:58:00+0000"},{"id":266,"message":"Johan Wallin har uppn\u00e5tt sitt s\u00e4ljm\u00e5l!","is_read":true,"followup":{"id":44,"name":"Fokus f\u00f6r augusti","start_date":"2016-08-10T00:00:00+0000","end_date":"2016-09-30T00:00:00+0000","description":"F\u00f6rs\u00e4ljning av fokusprodukter i augisti","type":"score","status":"published"},"created":"2016-08-15T12:21:51+0000"}],"total_count":47,"unread_count":1}
+
+## Notifications [/users/{user_id}/notifications/read]
+
++ Parameters
+
+    + user_id: `34` (required, number|string) - The user ID or 'me'.
+
+### Mark all notifications as read [PUT]
+
+Mark all notifications for the given user as read.
+
++ Response 204 
+
+## Notification [/users/{user_id}/notifications/{id}/read]
+
++ Parameters
+
+    + user_id: `34` (required, number|string) - The user ID or 'me'.
+    + id: `44` (required, number|string) - The notification id.
+
+### Mark notification as read [PUT]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"notification":{"id":1,"message":"M\u00e5l n\u00e5tt!","is_read":true,"followup":{"id":1,"name":"Mobiler f\u00f6rs\u00e4ljningst\u00e4vling"},"created":"2016-06-30T14:02:26+0000"}}

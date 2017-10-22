@@ -1,0 +1,57 @@
+# Group Authorization
+
+## Token [/oauth/v2/tokens]
+
+### Create token [POST]
+Generate a new access token.
+
++ Request Password grant (application/json)
+
+        {
+            "client_id": "1_3in9qilg8nac4o0k840o4scwsg4kw000wcow8ggwg4s0occcgk",
+            "client_secret": "4jnh881wkg00wwsg4ks88o04sgw0cc4ww4ksc84ko0844s404g",
+            "grant_type": "password",
+            "username": "user@gmail.com",
+            "password": "example_password"
+        }
+
++ Request Authorization code grant (application/json)
+
+        {
+            "client_id": "1_3in9qilg8nac4o0k840o4scwsg4kw000wcow8ggwg4s0occcgk",
+            "client_secret": "4jnh881wkg00wwsg4ks88o04sgw0cc4ww4ksc84ko0844s404g",
+            "grant_type": "authorization_code",
+            "code": "ZTBkNjgwNWM4YWUwZjM0ZDg4N2U1NGMyODU5ZmYxNzJkNzdmYmEwODUxODhmNjViOGFkMTIyOWFlNWM0M2UyOA",
+            "redirect_uri": "http://customer-pushappy-uat-api.spire.se"
+        }
+
++ Request Refresh token grant (application/json)
+
+        {
+            "client_id": "1_3in9qilg8nac4o0k840o4scwsg4kw000wcow8ggwg4s0occcgk",
+            "client_secret": "4jnh881wkg00wwsg4ks88o04sgw0cc4ww4ksc84ko0844s404g",
+            "grant_type": "refresh_token",
+            "refresh_token": "MmI0ZmVjNDdjMGVkZmQ1MjM0YzJhMWUzZGIyODA5MjlhM2JmM2YzNjI1MDc5MGUxMWEzNDc4NjkwNzM4MzhiMA"
+        }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"access_token":"YTBmNDk3NDVmZDc3MjEwYzgxZmYxNTE3M2RlZDA0NWJhNTA0Y2ZiNmJkMjdhNDI5NDA1ZWMyMTQ1OWFmYTExNw","expires_in":3600,"token_type":"bearer","scope":null,"refresh_token":"MmI0ZmVjNDdjMGVkZmQ1MjM0YzJhMWUzZGIyODA5MjlhM2JmM2YzNjI1MDc5MGUxMWEzNDc4NjkwNzM4MzhiMA"}
+
++ Response 400 (aspplication/json)
+
+    + Body
+
+            {"error":"invalid_grant","error_description":"Invalid username and password combination"}
+
+
+## Invalidate token [/oauth/v2/tokens/invalidate]
+
+### Invalidate token [DELETE]
+Invalidate the access token, used to make the request.
+
++ Request (application/json)
+
++ Response 204

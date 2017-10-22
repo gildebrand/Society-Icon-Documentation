@@ -1,0 +1,226 @@
+# Group Posts
+
+## Posts [/followups/{followup_id}/posts{?offset}{?limit}{?from_date}{?to_date}]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+
+#### List posts [GET]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Participant, observer or admin for followup
+
++ Parameters
+
+    + limit: `30` (optional, number) - The maximum number of items to retrieve.
+        + Default: `20`
+    + offset: `55` (optional, number) - The number of items to offset the result by.
+        + Default: `0`
+    + from_date: `2017-03-26T00:00:00+00:00` (optional, datetime) - The from date to filter posts to include by.   
+    + to_date: `2017-04-26T23:59:59+00:00` (optional, datetime) - The to date to filter posts to include by.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"posts":[{"id":13,"content":"We will have a team meeting just before the competition begins.","notify_all":true,"user":{"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"liked_by":[],"comments":[],"created":"2017-05-08T20:19:30+0000","updated":"2017-05-08T20:19:30+0000"}],"total_count":1}
+
+#### Create post [POST]
+
+Set the `notify_all` key to `true` send a notification to all participants and observers of the followup. 
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Participant, observer or admin for followup
+
++ Request (application/json)
+
+     + Body
+
+            {
+                "post": {
+                    "content": "We will have a team meeting just before the competition begins.",
+                    "notify_all": true
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"post":{"id":13,"content":"We will have a team meeting just before the competition begins.","notify_all":true,"user":{"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"liked_by":[],"comments":[],"created":"2017-05-08T20:19:30+0000","updated":"2017-05-08T20:19:30+0000"}}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"content":{"errors":["This value should not be blank."]}}}}
+
+## Post [/followups/{followup_id}/posts/{id}]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+    + id: `44` (required, number) - The post ID.
+
+#### Get post [GET]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Participant, observer or admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"post":{"id":13,"content":"We will have a team meeting just before the competition begins!","notify_all":true,"user":{"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"liked_by":[],"comments":[],"created":"2017-05-08T20:19:30+0000","updated":"2017-05-08T20:19:30+0000"}}
+
+#### Update post [PATCH]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Participant, observer or admin for followup
+
++ Request (application/json)
+
+     + Body
+
+            {
+                "post": {
+                    "content": "New text in post!",
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"post":{"id":13,"content":"New text in post!","notify_all":true,"user":{"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"liked_by":[],"comments":[],"created":"2017-05-08T20:19:30+0000","updated":"2017-05-08T20:19:30+0000"}}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"content":{"errors":["This value should not be blank."]}}}}
+
+#### Delete post [DELETE]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Post creator
+* Admin for followup
+
++ Response 204
+
+## Like [/followups/{followup_id}/posts/{id}/like]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+    + id: `44` (required, number) - The post ID.
+
+#### Like post [PUT]
+
+Side effect: Will notify the post owner about the like. 
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Participant, observer or admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"post":{"id":35,"content":"We will have a team meeting just before the competition begins.","notify_all":false,"user":{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/pushappy.dev\/app_dev.php\/v1\/users\/8\/pictures\/default","generated":true}},"liked_by":[{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/api.pushappy.com\/v1\/users\/8\/pictures\/default","generated":true}}],"comments":[],"created":"2017-05-09T12:20:53+0000","updated":"2017-05-09T12:30:25+0000"}}
+
+#### Unlike post [DELETE]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Participant, observer or admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"post":{"id":35,"content":"We will have a team meeting just before the competition begins.","notify_all":false,"user":{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/pushappy.dev\/app_dev.php\/v1\/users\/8\/pictures\/default","generated":true}},"liked_by":[],"comments":[],"created":"2017-05-09T12:20:53+0000","updated":"2017-05-09T12:30:25+0000"}}
+
+## Comments [/followups/{followup_id}/posts/{post_id}/comments]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+    + post_id: `45` (required, number) - The post ID. 
+
+#### Add comment [POST]
+
+Side effect: Will notify the post owner and other user whom commented on the post before.
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Participant, observer or admin for followup
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "comment": {
+                    "content": "The content of the comment, emojis are supported. 🦆"
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"comment":{"id":13,"user":{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"content":"The content of the comment, emojis are supported. \ud83e\udd86","created":"2017-08-31T11:50:39+0000","updated":"2017-08-31T11:50:39+0000"}}
+
+
+## Comment [/followups/{followup_id}/posts/{post_id}/comments/{id}]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+    + post_id: `45` (required, number) - The post ID. 
+    + id: `45` (required, number) - The comment ID. 
+
+#### Update comment [PATCH]
+
+#### Permissions requirements
+* Super admin
+* Comment owner
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "comment": {
+                    "content": "New comment text!"
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"comment":{"id":11,"user":{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"content":"New comment text!","created":"2017-08-31T08:48:02+0000","updated":"2017-08-31T08:48:04+0000"}}
+
+#### Delete comment [DELETE]
+
+#### Permissions requirements
+* Super admin
+* Comment owner
+
++ Response 204

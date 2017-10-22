@@ -1,0 +1,363 @@
+# Group Organizations
+
+## Organizations [/organizations{?query}{?limit}{?offset}]
+
+### List organizations [GET]
+
+#### Permissions requirements
+* Super admin
+
++ Parameters
+
+    + query: `Sp` (optional, string) - Begins with filter for organization name.
+    + limit: `30` (optional, number) - The maximum number of items to retrieve.
+        + Default: `50`
+    + offset: `55` (optional, number) - The number of items to offset the result by.
+        + Default: `0`
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"organizations":[{"id":1,"name":"Spire", "user_count":7},{"id":2,"name":"V\u00e4stra", "user_count":4}]}
+
+
+### Create organization [POST]
+
++ Request (application/json)
+ 
+    + Body
+
+            {
+                "organization": {
+                    "name": "Spire"
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"organization":{"id":1,"name":"Spire"}}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"name":{"errors":["This value should not be blank."]}}}}
+
+            
+## Organization [/organizations/{id}]
+
++ Parameters
+
+    + id: `34` (required, number) - The organization ID.
+
+### Get organization [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"organization":{"id":1,"name":"Spire"}}
+
+### Update organization [PATCH]
+
++ Request (application/json)
+ 
+    + Body
+
+            {
+                "organization": {
+                    "name": "New Name"
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"organization":{"id":1,"name":"New name"}}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"name":{"errors":["This value should not be blank."]}}}}
+
+
+## Disable organization [/organizations/{id}/disable]
+
++ Parameters
+
+    + id: `34` (required, number) - The organization ID.
+
+### Disable organization [PUT]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"organization":{"id":1,"name":"Spire", "status": "disabled"}}
+
+## Disable organization [/organizations/{id}/activate]
+
++ Parameters
+
+    + id: `34` (required, number) - The organization ID.
+
+### Activate organization [PUT]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"organization":{"id":1,"name":"Spire", "status": "active"}}
+
+## Logo [/organization/{id}/logos]
+
++ Parameters
+
+    + id: `34` (required, number|string) - The organization ID.
+
+#### Upload logo [POST]
+
+Upload a new logo for an organization. The picture will be cropped in a square. Supported file format is png, jpeg.
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+
++ Request (multipart/form-data; charset=utf-8; boundary=CONTENT)
+
+    + Body
+
+            --CONTENT
+            Content-Disposition: form-data; name="upload[file]"; filename="name.png"
+            Content-Type: image/png
+
+            PNG
+
+            ..PNG-body..
+
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"organization":{"id":1,"name":"Spire","logo":{"url":"https:\/\/api.pushappy.com\/media\/cache\/organization_logo\/uploads\/images\/747e87108f55299af1b741adcecf988388fcccf7.png"}}}
+
+#### Remove logo [DELETE]
+
+Removes the logo from the given organization.
+
+#### Permissions requirements
+* Super admin
+* Admin for organization.
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"organization":{"id":1,"name":"Spire"}}
+
+## Followups [/organizations/{id}/followups{?state}{?query}{?offset}{?limit}{?created_by_id}]
+
+Get followups that belongs to the given organization, paginated. If user has system "super admin role" or admin role for organization all followup for the given organization will be included. 
+
++ Parameters
+
+    + id: `34` (required, number) - The organization ID.
+    + state: `upcoming`  (optional, enum[string]) - State for followups to get.
+        + Default: `all`
+
+        + Members
+            + `all`
+            + `upcoming`
+            + `active`
+            + `upcoming_or_active`
+            + `expired`
+    + query: `Mobil` (optional, string) - Begins with filter for followup name.
+    + limit: `30` (optional, number) - The maximum number of items to retrieve.
+        + Default: `50`
+    + offset: `55` (optional, number) - The number of items to offset the result by.
+        + Default: `0`
+    + created_by_id: `20` (optional, number|string) - The user ID (or 'me') to filter followups by.
+
+### Get followups [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followups":[{"id":684,"name":"Kapslar till kaffemaskin","start_date":"2017-07-31T22:00:00+0000","end_date":"2017-08-30T22:00:00+0000","user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/users\/8\/pictures\/default","generated":true}}],"team_participants":[],"observers":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"administrators":[],"followup_products":[{"id":1732,"product":{"id":1732,"name":"Gr\u00f6na"},"points":2,"product_descriptions":[],"color":"#3498db"},{"id":1733,"product":{"id":1733,"name":"R\u00f6da"},"points":3,"product_descriptions":[],"color":"#9e5fb9"}],"status":"published","created_by":{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/pushappy.dev\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}}]}
+
+
+## Products [/organizations/{organization_id}/products{?query}{?offset}{?limit}{?created_by_id}]
+
+Get products that belongs to the given organization followup's, paginated.
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+
+### Get products [GET]
+
++ Parameters
+ + query: `Mobil` (optional, string) - Contains filter for product name.
+    + limit: `30` (optional, number) - The maximum number of items to retrieve.
+        + Default: `50`
+    + offset: `55` (optional, number) - The number of items to offset the result by.
+        + Default: `0`
+    + created_by_id: `20` (optional, number|string) - The user ID (or 'me') to filter followups by. 
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"products":[{"id":1794,"name":"The best product","picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/product_picture\/uploads\/images\/3fecb1181c5d55277666c28f0b99992ba3b7df2e.jpeg"},"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}],"created_by":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}}]}
+
+## Product [/organizations/{organization_id}/products/{id}]
+
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+
+
+### Create product [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "product": {
+                    "name": "The best product",
+                    "product_descriptions": [
+                        {
+                            "content": "Beskrivning för produkt",
+                            "paragraph": 1
+                        },
+                        {
+                            "content": "Säljtips för produkt",
+                            "paragraph": "2"
+                        }
+                    ]
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"product":{"id":1794,"name":"The best product","product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}]}}
+
+### Get product [GET]
+
++ Parameters
+
+    + id: `34` (required, number) - The product ID.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"product":{"id":1794,"name":"The best product","picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/product_picture\/uploads\/images\/3fecb1181c5d55277666c28f0b99992ba3b7df2e.jpeg"},"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}]}}
+
+### Update product [PATCH]
+
++ Parameters
+
+    + id: `34` (required, number) - The product ID.
+
++ Request (application/json)
+
+    + Body
+
+            {
+              "product": {
+                "name": "Nytt namn",
+                "product_descriptions": [
+                  {
+                    "content": "Beskrivning för produkt",
+                    "paragraph": 1
+                  },
+                  {
+                    "content": "Säljtips för produkt",
+                    "paragraph": "2"
+                  }
+                ]
+              }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"product":{"id":1794,"name":"Nytt namn","picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/product_picture\/uploads\/images\/3fecb1181c5d55277666c28f0b99992ba3b7df2e.jpeg"},"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}]}}
+
+## Product picture [/organization/{organization_id}/products/{id}/pictures]
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+    + id: `44` (required, number) - The product ID.
+
+#### Upload product picture [POST]
+
+Upload a new picture for a product. Supported file format is png, jpeg.
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+
++ Request (multipart/form-data; charset=utf-8; boundary=CONTENT)
+
+    + Body
+
+            --CONTENT
+            Content-Disposition: form-data; name="upload[file]"; filename="name.png"
+            Content-Type: image/png
+
+            PNG
+
+            ..PNG-body..
+
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"product":{"id":3,"name":"The best product","picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/0202d00fa6c123bfde112ea410d4cdc7eb3b6193.jpeg"}}}
+
+
+#### Remove product picture [DELETE]
+
+Remove the current picture for a product.
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"product":{"id":3,"name":"The best product"}}

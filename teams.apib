@@ -1,0 +1,236 @@
+# Group Team
+
+## Teams [/organizations/{organization_id}/teams]
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+
+### Get team for organization [GET]
+
+#### Permissions requirements
+* Super admin
+* Role for this organization
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"teams":[{"members":[{"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"}}],"id":2,"name":"Salesmans"}]}
+
+
+### Create team for organization [POST]
+
+#### Permissions requirements
+* Super admin
+* Role for this organization
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "team": {
+                    "name": "Salesmans"
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"team":{"id":2,"name":"Salesmans","members":[]}}
+
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"name":{"errors":["This value should not be blank."]}}}}
+
+
+## Team [/organizations/{organization_id}/teams/{id}]
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+    + id: `41` (required, number) - The team ID.
+
+
+### Get team [GET]
+
+#### Permissions requirements
+* Super admin
+* Role for this organization
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"team":{"members":[{"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"}}],"id":2,"name":"Salesmans"}}
+
+
+### Update team [PATCH]
+
+#### Permissions requirements
+* Super admin
+* Role for this organization
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "team": {
+                    "name": "Salesmans"
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"team":{"members":[{"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"}}],"id":2,"name":"Salesmans"}}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"name":{"errors":["This value should not be blank."]}}}}
+
+
+# Delete team [DELETE]
+
+#### Permissions requirements
+* Super admin
+* Role for this organization
+
++ Request (application/json)
+
++ Response 204
+
+## Profile picture [/organizations/{organization_id}/teams/{id}/pictures]
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+    + id: `41` (required, number) - The team ID.
+
+#### Upload profile picture [POST]
+
+Upload a new profile picture for a team. The picture will be cropped in a square. Supported file format is png, jpeg.
+
+#### Permissions requirements
+* Super admin
+* Organization admin
+
++ Request (multipart/form-data; charset=utf-8; boundary=CONTENT)
+
+    + Body
+
+            --CONTENT
+            Content-Disposition: form-data; name="upload[file]"; filename="name.png"
+            Content-Type: image/png
+
+            PNG
+
+            ..PNG-body..
+
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"team":{"members":[{"user":{"registration_completed":true,"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}}],"id":2,"name":"Smedjan","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/5ca504b3c0be4ebaa6c40ef59a1ba4a67536a18a.png"}}}
+
+#### Remove profile picture [DELETE]
+
+Removes the current profile picture from the given team.
+
+#### Permissions requirements
+* Super admin
+* Organization admin
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"team":{"members":[{"user":{"registration_completed":true,"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}}],"id":2,"name":"Smedjan"}}
+
+## Team Members [/organizations/{organization_id}/teams/{team_id}/members/{user_id}]
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+    + team_id: `41` (required, number) - The team ID.
+    + user_id: `54` (required, number) - The user ID.
+
+### Add team meber [POST]
+
+#### Permissions requirements
+* Super admin
+* Role for this organization
+
++ Request (application/json)
+
+    + Body
+
+            {}
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"team":{"members":[{"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"}}],"id":2,"name":"Salesmans"}}
+
+### Remove team meber [DELETE]
+
+#### Permissions requirements
+* Super admin
+* Role for this organization
+
++ Request (application/json)
+
+    + Body
+
+            {}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"team":{"members":[],"id":2,"name":"Salesmans"}}
+
+## Team Members [/organizations/{organization_id}/teams/{team_id}/members/teams/{other_team_id}]
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+    + team_id: `41` (required, number) - The team ID.
+    + other_team_id: `54` (required, number) - The other team ID.
+
+### Add from other team [POST]
+
+Add team members from another team to the given team. 
+
+#### Permissions requirements
+* Super admin
+* Role for this organization
+
++ Request (application/json)
+
+    + Body
+
+            {}
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"team":{"members":[{"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"}}],"id":2,"name":"Salesmans"}}

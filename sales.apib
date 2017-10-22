@@ -1,0 +1,215 @@
+# Group Sales
+
+## Followups sales [/followups/{followup_id}/sales/{id}{?user_id}{?limit}{?offset}{?product_ids}{?team_id}]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+
+#### List sales [GET]
+
+List sales for a given followup. The parameter `user_id` can be used to only get sales related to a single user. If no `user_id` is given the sales objects will include the user who made the sale.
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+* Participant in followup.
+
++ Parameters
+
+    + user_id: `34` (optional, number|string) - The user ID or 'me'.
+    + team_id: `44` (optional, number) - The team ID. 
+    + product_ids: `1,2,4` (optional, array) - The product IDs to filter by.
+    + limit: `30` (optional, number) - The maximum number of items to retrieve.
+        + Default: `50`
+    + offset: `55` (optional, number) - The number of items to offset the result by.
+        + Default: `0`
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"sales":[{"id":21249,"product":{"id":1750,"name":"Dubbel"},"quantity":2,"revenue":299,"comment":"Kommentar","user":{"id":756,"first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/aef83fc1d312a38d652ca3f5f9b1d8e7acaa6b06.jpeg"}},"date":"2017-08-08T16:06:58+0000","reported_in":{"id":689,"name":"V\u00e4ster\u00e5s"},"followup_points":6}]}
+
+#### Create sale [POST]
+
+Report a new sale for the logged in user. `date` should only be given if the sales is to be reported back in time as it defaults to now, `comment` is optional as long as no product in the sales forces the user to give a comment. For team followups the `reported_for_team` must be given, to connect the followup to a given team.  
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "sale": {
+                    "comment" : "Comment for this sale (optional in most cases)",
+                    "date": "2016-05-20T13:17:16+00:00",
+                    "product": 1,
+                    "revenue": 17888,
+                    "quantity": 1,
+                    "revenue": 299,
+                    "reported_for_team": 123
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"sale":{"id":21259,"product":{"id":1778,"name":"Enkels\u00e4ng"},"quantity":4,"revenue":17888,"date":"2017-08-23T09:10:08+0000","reported_in":{"id":699,"name":"S\u00e4ngar"},"comment":"Kommentar f\u00f6r s\u00e4ljet"}}
+
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"errors":["User needs to a be a participant to report sales."],"children":{"product":{"errors":["This value should not be null."]},"quantity":{"errors":["This value should be greater than 0."]},"revenue":{},"date":{"errors":["Sales can't be reported after the followup has ended","Time travel is not permitted, you can't report sales in the future."]},"comment":{}}}}
+
+# Leaderboard [/followups/{followup_id}/sales/leaderboard{?product_ids}{?from_date}{?to_date}{?team}{?team_ids}{?data_point}]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+    + product_ids: `1,2,4` (optional, array) - The product IDs to include in the leaderboard calculation. 
+    + from_date: `2017-03-26T00:00:00+00:00` (optional, datetime) - The from date to filter sales to include by.   
+    + to_date: `2017-04-26T23:59:59+00:00` (optional, datetime) - The to date to filter sales to include by.  
+    + team: `1` (optional, boolean) - True (1) for teams leaderboard. 
+        + default: `0`
+    + team_ids: `2,3,4` (optional, array) - The team IDs to include members from in the calculation. Will return users not teams in response.
+    + data_point: `quantity` (optional, string) - Sale attribute to use in leaderboard caluclation. 
+        + Default: `quantity`
+
+        + Members
+            + `quantity`
+            + `revenue`
+            + `points` 
+
+
+#### Get leaderboard [GET]
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+* Participant in followup
+* Observer for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"leaderboard":[{"user":{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"total":71552,"position":1,"today":0},{"user":{"id":2,"email":"marcus@spire.se","first_name":"Marcus","last_name":"Windmark","profile_picture":{"url":"http:\/\/api.pushappy.com\/v1\/users\/2\/pictures\/default","generated":true}},"total":1552,"position":2,"today":0},{"user":{"id":3,"email":"carl@spire.se","first_name":"Carl","last_name":"Ekman","profile_picture":{"url":"http:\/\/api.pushappy.com\/v1\/users\/3\/pictures\/default","generated":true}},"total":1552,"position":2,"today":0}]}
+
+# Overview [/followups/{followup_id}/sales/overview{?from_date}{?to_date}{?user_id}]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+    + from_date: `2016-05-15` (optional, string) - Start date for day to day statistics. 
+        + default: 14 days back.
+    + to_date: `2016-06-15` (optional, string) - End date for day to day statistics. 
+            + default: Today.
+    + user_id: `45` (optional, number|string) - The user ID or 'me'.
+
+
+#### Get overview [GET]
+
+Get day to day sales statistics for followup, from a given start date until today.
+If `user_id` query parameter is set only sales for the given user will be included.
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+* Participant in followup
+* Observer of followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"sales_overview":{"period_start":{"total_quantity":6,"total_points":12,"total_revenue":17888},"period_end":{"total_quantity":12,"total_points":12,"total_revenue":71552},"per_day":[{"date":"2017-08-23","quantity":6,"points":0,"revenue":53664,"products":[{"id":1778,"quantity":6,"revenue":53664,"points":0},{"id":1779,"quantity":0,"revenue":0,"points":0},{"id":1732,"quantity":0,"revenue":0,"points":0},{"id":1733,"quantity":0,"revenue":0,"points":0},{"id":1784,"quantity":0,"revenue":0,"points":0}]}],"quantity_goal":100}}
+
+## Export sales [/followups/{followup_id}/sales/export{?user_id}{?team_id}{?limit}{?offset}{?product_ids}{?from_date}{?to_date}]
+
+#### Export sales [GET]
+
+Export sales for a given followup to Excel-format. The parameter `user_id` can be used to only get sales related to a single user.
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+* Participant in followup.
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+    + user_id: `34` (optional, number|string) - The user ID or 'me'.
+    + team_id: `44` (optional, number) - The team ID.
+    + product_ids: `1,2,4` (optional, array) - The product IDs to filter by.
+    + limit: `30` (optional, number) - The maximum number of items to retrieve. Defaults to all sales.
+    + offset: `55` (optional, number) - The number of items to offset the result by.
+        + Default: `0`
+    + from_date: `2017-03-26T00:00:00+00:00` (optional, datetime) - The from date to filter sales to include by.   
+    + to_date: `2017-04-26T23:59:59+00:00` (optional, datetime) - The to date to filter sales to include by. 
+
++ Response 200 (text/vnd.ms-excel; charset=utf-8)
+
+## Sale [/sales/{id}{?user_id}{?limit}{?offset}{?product_ids}]
+
+#### Update sale [PATCH]
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+* Owner of sale
+
++ Parameters
+
+    + id: `44` (required, number) - The sale ID.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "sale": {
+                    "comment" : "Comment for this sale (optional in most cases)",
+                    "date": "2016-05-20T13:17:16+00:00",
+                    "product": 1,
+                    "quantity": 1,
+                    "revenue": 299
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"sale":{"id":48,"sale_products":[{"value":1,"product":{"id":1,"name":"The very best product"}}],"date":"2016-05-20T12:29:05+0000"}}
+
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"sale_products":{"children":[{"children":{"value":{},"product":{}}}]},"date":{"errors":["Time travel is not permitted, you can't report sales in the future."]}}}}
+
+#### Delete sale [DELETE]
+
+`reason_message` should only be given if the sale is delated by other user e.g. an admin.
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+* Owner of sale
+
++ Parameters
+
+    + id: `44` (required, number) - The sale ID.
+
++ Request (application/json)
+
+
+    + Body
+
+            {"reason_message":"Detta sälj har rapporterats dubbelt."}
+
++ Response 204

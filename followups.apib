@@ -1,0 +1,564 @@
+# Group Followups
+
+## Followups [/followups]
+
+#### Create followup [POST]
+
+Followups can be of `score`, `revenue` or `quantity` type.
+If the `base_followup` key is given in the request body the new followup will inherit attributes from the old followup with the given id. 
+
+> Note: The active user will be added as an observer for the new followup if a organization admin role exist for the given organization.  
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+
++ Request (application/json)
+
+     + Body
+
+            {
+                "followup": {
+                    "name": "Första uppföljningen",
+                    "organization": 1,
+                    "start_date": "2016-05-11",
+                    "end_date": "2016-05-31",
+                    "type": "score"
+                },
+                "base_followup" : 123
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"followup":{"id":11,"name":"F\u00f6rsta uppf\u00f6ljningen","start_date":"2016-05-11T00:00:00+0000","end_date":"2016-05-31T00:00:00+0000","organization":{"id":1,"name":"Spire","status":"draft"}}}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"organization":{},"name":{"errors":["This value should not be blank."]},"start_date":{},"end_date":{"errors":["This value should not be null."]},"description":{}}}}
+
+
+## Followup [/followups/{id}]
+
++ Parameters
+
+    + id: `34` (required, number) - The followup ID.
+
+#### Get followup [GET]
+
+#### Permissions requirements
+* Super admin
+* Admin for an organization
+* Participant of the follow up
+* Admin for followup
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Pushappy"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"team_participants":[],"observers":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e74c3c","stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":100,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104209,"points_forecast":0,"quantity_progress":0.08},"user_stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":50,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104209,"points_forecast":0,"quantity_progress":0.16}}],"status":"published","user_stats":{"quantity":8,"points":0,"revenue":71552,"revenue_goal":77,"quantity_goal":105,"revenue_relative_setpoint":0.69,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104209,"points_forecast":0,"quantity_progress":0.08,"revenue_progress":929.25},"stats":{"quantity":8,"points":0,"revenue":0,"quantity_forecast":12,"revenue_forecast":0,"points_forecast":0}}}
+
+
+#### Update followup [PATCH]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "followup": {
+                    "name": "Första uppföljningen",
+                    "start_date": "2016-05-11",
+                    "end_date": "2016-05-31",
+                    "type": "score"
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup":{"id":2,"name":"F\u00f6rsta uppf\u00f6ljningen","start_date":"2016-05-11T00:00:00+0000","end_date":"2016-05-31T00:00:00+0000","organization":{"id":1,"name":"Spire"},"products":[]}}
+
+#### Delete followup [DELETE]
+
+Delete the followup given by `id`.
+
+::: warning
+This is a soft delete, the followup will be marked as delete. Note that a restore function is not available.
+:::
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 204
+
+## Followup Products [/followups/{followup_id}/followupproducts]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+
+#### Create Product [POST]
+
+`sale_comment_user_defined_title` must be given if `sale_comment_type` is `other_text` or `other_numeric`. `points` and `default_revenue` are optional.
+
+Supported values for `sale_comment_type`:
+* none
+* email
+* company_name
+* organization_number
+* mobile
+* ssn
+* serial_number
+* other_numeric
+* other_text
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "followup_product": {
+                    "points": 60,
+                    "default_revenue": 400,
+                    "product_descriptions": [
+                        {
+                            "content": "Den här produkten är den bästa produkten...",
+                            "paragraph": 1
+                        },
+                        {
+                            "content": "När man säljer produkten ska man tänka på att..",
+                            "paragraph": 2
+                        }
+                    ],
+                    "sale_comment_type" : "other_text",
+                    "sale_comment_user_defined_title" : "Titel som kan sättas för övrigt.",
+                    "product": 123,
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup_product":{"sale_comment_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","sale_comment_is_numeric":true,"id":1795,"product":{"id":1784,"name":"R\u00f6da","product_descriptions":[]},"points":3,"default_revenue":4,"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}],"sale_comment_type":"other_numeric","sale_comment_user_defined_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","color":"#2ecc71"}}
+            
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"errors":["The product is already included in this followup."],"children":{"product_descriptions":{"children":[{"children":{"content":{},"paragraph":{}}},{"children":{"content":{},"paragraph":{}}}]},"product":{},"points":{},"default_revenue":{},"sale_comment_type":{},"sale_comment_user_defined_title":{}}}}
+
+## Followup overview [/followups/{id}/overview]
+
++ Parameters
+
+    + id: `34` (required, number) - The followup ID.
+
+#### Get followup overview [GET]
+
+The response will contain sales statistics, goals and setpoints for products and participating users.
+
+#### Permissions requirements
+* Super admin
+* Admin for an organization
+* Participant/observer of the follow up.
+* Admin for followup
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Pushappy"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"},"stats":{"quantity":8,"points":0,"revenue":71552,"quantity_forecast":12,"revenue_forecast":104156,"points_forecast":0},"followup_products":[{"id":1793,"stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0}},{"id":1794,"stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0}},{"id":1795,"stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0}},{"id":1778,"stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":50,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104156,"points_forecast":0,"quantity_progress":0.16}},{"id":1779,"stats":{"quantity":0,"points":0,"revenue":0,"quantity_goal":55,"quantity_relative_setpoint":0.69,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0,"quantity_progress":0}},{"id":1791,"stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0}}]}],"team_participants":[],"observers":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"administrators":[],"followup_products":[{"sale_comment_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","sale_comment_is_numeric":true,"id":1793,"points":3,"default_revenue":4,"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}],"sale_comment_type":"other_numeric","sale_comment_user_defined_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","color":"#3498db","stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0},"user_stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0}},{"sale_comment_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","sale_comment_is_numeric":true,"id":1794,"product":{"id":1733,"name":"R\u00f6da"},"points":3,"default_revenue":4,"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}],"sale_comment_type":"other_numeric","sale_comment_user_defined_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","color":"#9e5fb9","stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0},"user_stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0}},{"sale_comment_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","sale_comment_is_numeric":true,"id":1795,"product":{"id":1784,"name":"R\u00f6da"},"points":3,"default_revenue":4,"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}],"sale_comment_type":"other_numeric","sale_comment_user_defined_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","color":"#e74c3c","stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0},"user_stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0}},{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22","stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":100,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104156,"points_forecast":0,"quantity_progress":0.08},"user_stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":50,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104156,"points_forecast":0,"quantity_progress":0.16}},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f","stats":{"quantity":0,"points":0,"revenue":0,"quantity_goal":125,"quantity_relative_setpoint":0.69,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0,"quantity_progress":0},"user_stats":{"quantity":0,"points":0,"revenue":0,"quantity_goal":55,"quantity_relative_setpoint":0.69,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0,"quantity_progress":0}},{"id":1791,"product":{"id":1732,"name":"Gr\u00f6na"},"points":3,"default_revenue":4,"product_descriptions":[],"color":"#2ecc71","stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0},"user_stats":{"quantity":0,"points":0,"revenue":0,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0}}],"status":"published","user_stats":{"quantity":8,"points":0,"revenue":71552,"revenue_goal":77,"quantity_goal":105,"revenue_relative_setpoint":0.69,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104156,"points_forecast":0,"quantity_progress":0.08,"revenue_progress":929.25},"stats":{"quantity":8,"points":0,"revenue":0,"quantity_forecast":12,"revenue_forecast":0,"points_forecast":0}}}
+
+
+## Followup products [/followups/{followup_id}/followupproducts{?user_id}]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+
+#### Get Products [GET]
+
+Get products for a given followup, will also include sales and goals data. 
+If `user_id` query parameter is set only sale and goals data for the given user will be included.
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Participant in followup
+* Admin for followup
+
++ Parameters
+
+    + user_id: `45` (optional, number|string) -The user ID or 'me'.
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#3498db","stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":100,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104144,"points_forecast":0,"quantity_progress":0.08},"user_stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":50,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104144,"points_forecast":0,"quantity_progress":0.16}},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#9e5fb9","stats":{"quantity":0,"points":0,"revenue":0,"quantity_goal":125,"quantity_relative_setpoint":0.69,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0,"quantity_progress":0},"user_stats":{"quantity":0,"points":0,"revenue":0,"quantity_goal":55,"quantity_relative_setpoint":0.69,"quantity_forecast":0,"revenue_forecast":0,"points_forecast":0,"quantity_progress":0}}]}
+
+
+## Product [/followups/{followup_id}/followupproducts/{id}]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+    + id: `44` (required, number) - The product ID.
+
+#### Get Product [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup_product":{"sale_comment_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","sale_comment_is_numeric":true,"id":1795,"product":{"id":1784,"name":"R\u00f6da","product_descriptions":[]},"points":60,"default_revenue":4,"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}],"sale_comment_type":"other_numeric","sale_comment_user_defined_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","color":"#2ecc71"}}
+
+#### Update Product [PATCH]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "followup_product": {
+                    "name": "Nytt namn",
+                    "points": 60,
+                    "default_revenue": 400,
+                    "product_descriptions": [
+                        {
+                            "content": "Beskrivning för produkt",
+                            "paragraph": 1
+                        },
+                        {
+                            "content": "Säljtips för produkt",
+                            "paragraph": 2
+                        }
+                    ]
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup_product":{"sale_comment_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","sale_comment_is_numeric":true,"id":1795,"product":{"id":1784,"name":"R\u00f6da","product_descriptions":[]},"points":60,"default_revenue":4,"product_descriptions":[{"content":"Beskrivning f\u00f6r produkt","paragraph":{"id":1,"title":"Beskrivning","sorting":1}},{"content":"S\u00e4ljtips f\u00f6r produkt","paragraph":{"id":2,"title":"S\u00e4ljtips","sorting":2}}],"sale_comment_type":"other_numeric","sale_comment_user_defined_title":"Ange vilken butik som gjorde s\u00e4ljet. ex. Uppsala","color":"#2ecc71"}}
+
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"product_descriptions":{"children":[{"children":{"content":{},"paragraph":{}}},{"children":{"content":{},"paragraph":{}}}]},"points":{"errors":["This value should be greater than 0."]}}}}
+
+#### Delete Product [DELETE]
+
+Delete the given Followup Product from the followup.
+
+::: warning
+This is a destructive action and will also delete any goal for this Followup Product. Sales data will not be deleted as it´s belongs to the underlying Product.
+:::
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 204
+
+## Participants [/followups/{followup_id}/participants/{user_id}]
+
++ Parameters
+    + followup_id: `34` (required, number) - The followup ID.
+    + user_id: `44` (required, number) - The user ID.
+
+#### Add participant [POST]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/users\/8\/pictures\/default","generated":true}}],"team_participants":[],"observers":[],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}}
+
+#### Remove participant [DELETE]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"team_participants":[],"observers":[],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}}
+
+## Observers [/followups/{followup_id}/observers/{user_id}]
+
+Observers will receive updates about the followups they observe. 
+
++ Parameters
+    + followup_id: `34` (required, number) - The followup ID.
+    + user_id: `44` (required, number) - The user ID.
+
+#### Add observer [POST]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/users\/8\/pictures\/default","generated":true}}],"team_participants":[],"observers":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}}
+
+#### Remove observer [DELETE]
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[],"team_participants":[],"profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/organizations\/1\/teams\/2\/pictures\/default","generated":true}},"observers":[],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}
+
+## Add participants from team [/followups/{followup_id}/participants/teams/{team_id}]
+
++ Parameters
+    + followup_id: `34` (required, number) - The followup ID.
+    + team_id: `44` (required, number) - The team ID.
+
+### Add team participants [POST]
+
+Add all members of a given team as participants to the given followup. 
+
+::: warning
+The team members will be copied and any later change of members of the team will not propagate to followup participants.
+:::
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/users\/8\/pictures\/default","generated":true}}],"team_participants":[],"observers":[],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}}
+
+## Team participants [/followups/{followup_id}/teams/{team_id}]
+
++ Parameters
+    + followup_id: `34` (required, number) - The followup ID.
+    + team_id: `44` (required, number) - The team ID.
+
+### Add team participant [POST]
+
+Add team as participants to the given followup. 
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},{"id":3,"email":"carl@spire.se","first_name":"Carl","last_name":"Ekman","profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/users\/3\/pictures\/default","generated":true}}],"team_participants":[{"members":[{"user":{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}},{"user":{"id":3,"email":"carl@spire.se","first_name":"Carl","last_name":"Ekman","profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/users\/3\/pictures\/default","generated":true}}}],"id":2,"name":"Smedjan","profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/organizations\/1\/teams\/2\/pictures\/default","generated":true}}],"observers":[],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"errors":["Please remove all user participants before adding a team."]}
+
+### Remove team participant [DELETE]
+
+Remove team as participant for the given followup. 
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[],"team_participants":[],"profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/organizations\/1\/teams\/2\/pictures\/default","generated":true}},"observers":[],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}
+
+## Administrators [/followups/{followup_id}/administrators/{user_id}]
+
++ Parameters
+    + followup_id: `34` (required, number) - The followup ID.
+    + user_id: `44` (required, number) - The user ID.
+
+#### Add administrator [POST]
+
+Add edit permission to the given user for a single followup.
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+* Admin for followup
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[],"team_participants":[],"profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/organizations\/1\/teams\/2\/pictures\/default","generated":true}},"observers":[],"administrators":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}
+
+#### Remove administrator [DELETE]
+
+Removes edit permission for the given user and followup. 
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization.
+* Admin for followup
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Spire"},"user_participants":[],"team_participants":[],"profile_picture":{"url":"http:\/\/api.pushappy.com\/app_dev.php\/v1\/organizations\/1\/teams\/2\/pictures\/default","generated":true}},"observers":[],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e67e22"},{"id":1779,"product":{"id":1779,"name":"Dubbels\u00e4ng"},"product_descriptions":[],"color":"#f1c40f"}],"status":"published"}
+
+## Publish followup [/followups/{followup_id}/publish]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+
+#### Publish followup  [PUT]
+
+Publish the followup.
+Side effect: Will notify the participants about the followup.
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"followup":{"id":699,"name":"S\u00e4ngar","start_date":"2017-08-07T22:00:00+0000","end_date":"2017-08-31T21:59:59+0000","organization":{"id":1,"name":"Pushappy"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"team_participants":[],"observers":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"administrators":[],"followup_products":[{"id":1778,"product":{"id":1778,"name":"Enkels\u00e4ng"},"product_descriptions":[],"color":"#e74c3c","stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":100,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104209,"points_forecast":0,"quantity_progress":0.08},"user_stats":{"quantity":8,"points":0,"revenue":71552,"quantity_goal":50,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104209,"points_forecast":0,"quantity_progress":0.16}}],"status":"published","user_stats":{"quantity":8,"points":0,"revenue":71552,"revenue_goal":77,"quantity_goal":105,"revenue_relative_setpoint":0.69,"quantity_relative_setpoint":0.69,"quantity_forecast":12,"revenue_forecast":104209,"points_forecast":0,"quantity_progress":0.08,"revenue_progress":929.25},"stats":{"quantity":8,"points":0,"revenue":0,"quantity_forecast":12,"revenue_forecast":0,"points_forecast":0}}}
+
+## Goals [/followups/{followup_id}/goals]
+
++ Parameters
+
+    + followup_id: `34` (required, number) - The followup ID.
+
+#### List goals  [GET]
+
+Followups can have user/product specific goals and/or user/followup goals.
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"product_goals":[{"value":10,"user":{"id":5,"first_name":"Ludvig","last_name":"PushAppy"},"product":{"id":1777,"color":"#3498db"}},{"value":5,"user":{"id":6,"first_name":"Markus","last_name":"PushAppy"},"product":{"id":1777,"color":"#3498db"}},{"value":5,"user":{"id":4,"first_name":"Maximilian","last_name":"PushAppy"},"product":{"id":1777,"color":"#3498db"}}],"followup_goals":[]}
+
+#### Update goals  [PUT]
+
+Followups of type quantity will have product specific goals, other types only have user goals. For updating team goals, replace `user` id key in request with `team` id key.  
+
+#### Permissions requirements
+* Super admin
+* Admin for the organization
+
++ Request product specific (application/json)
+
+    + Body
+
+            {
+                "product_goals": [
+                    {
+                        "user": 185,
+                        "product": 1778,
+                        "value": 50
+                    },
+                    {
+                        "user": 1,
+                        "product": 1778,
+                        "value": 50
+                    },
+                    {
+                        "user": 185,
+                        "product": 1779,
+                        "value": 70
+                    },
+                    {
+                        "user": 1,
+                        "product": 1779,
+                        "value": 55
+                    }
+                ],
+                "followup_goals": [
+                    {
+                        "user": 1,
+                        "value": 77,
+                        "type": "revenue"
+                    }
+                ]
+            }
+
++ Request not product specific (application/json)
+
+    + Body
+
+            {"product_goals":[{"value":50,"user":{"id":185,"first_name":"Anton","last_name":"Gildebrand"},"product":{"id":1778,"color":"#3498db"}},{"value":50,"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"},"product":{"id":1778,"color":"#3498db"}},{"value":70,"user":{"id":185,"first_name":"Anton","last_name":"Gildebrand"},"product":{"id":1779,"color":"#9e5fb9"}},{"value":55,"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"},"product":{"id":1779,"color":"#9e5fb9"}}],"followup_goals":[{"value":77,"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"},"type":"revenue"}]}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"goals":[{"value":50,"user":{"id":1,"first_name":"Hampus","last_name":"Iggstr\u00f6m"}},{"value":55,"user":{"id":8,"first_name":"Marcus","last_name":"Windmark"}}]}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"followup_goals":{"children":[{"children":{"user":{},"value":{},"type":{}}}]},"product_goals":{"children":[{"children":{"user":{"errors":["This value is not valid."]},"value":{},"product":{}}},{"children":{"user":{},"value":{},"product":{}}},{"children":{"user":{"errors":["This value is not valid."]},"value":{},"product":{}}},{"children":{"user":{},"value":{},"product":{}}}]}}}}

@@ -1,0 +1,81 @@
+# Group Organization roles
+
+## Roles [/organizations/{organization_id}/roles]
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+
+### Get roles for organization [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"organization_roles":[{"id":1,"roles":["ROLE_ADMIN"],"user":{"id":1,"email":"sales_manager@gmail.com","first_name":"Hampus","last_name":"Iggstr\u00f6m", "teams":[{"id": 1, "name": "Superteam"}]}},{"id":15,"roles":["ROLE_SALESMAN"],"user":{"id":2,"email":"salesman@gmail.com","first_name":"Carl","last_name":"Ekman", "teams":[{"id": 1, "name": "Superteam"}]}}]}
+
+### Create role for organization [POST]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "organization_role": {
+                    "roles": [
+                        "ROLE_SALESMAN",
+                        "ROLE_ADMIN"
+                    ],
+                    "user_id": "2"
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {"organization_role":{"id":15,"roles":["ROLE_SALESMAN","ROLE_ADMIN"],"user":{"id":2,"email":"sales_manager@gmail.com","first_name":"Carl","last_name":"Ekman"}}}
+
++ Response 400 (application/json)
+
+    + Body
+
+            {"form":{"children":{"user_id":{},"roles":{"errors":["Roles can't be empty."]}}}}
+
+
+## Role [/organizations/{organization_id}/roles/{id}]
+
++ Parameters
+
+    + organization_id: `34` (required, number) - The organization ID.
+    + id: `41` (required, number) - The organization role ID.
+
+### Update organization role [PATCH]
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "organization_role": {
+                    "roles": [
+                        "ROLE_SALESMAN"
+                    ]
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"organization_role":{"id":15,"roles":["ROLE_SALESMAN"],"user":{"id":2,"email":"sales_manager@gmail.com","first_name":"Carl","last_name":"Ekman"}}}
+
+
+# Delete organization role [DELETE] 
+
++ Request (application/json)
+
+
++ Response 204

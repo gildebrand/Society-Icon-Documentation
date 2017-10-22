@@ -1,0 +1,31 @@
+# Group Message
+
+## Message [/organizations/{organizations_id}/messages]
+
++ Parameters
+
+    + organizations_id: 4 (required, number) - Organization ID.
+
+#### Send message [POST]
+
+Send a message to one or multiple users in the given organisation. The maximum message length is 255 characters.
+
+#### Permissions requirements
+* Super admin
+* Admin for organization
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "message": {
+                    "users": [
+                        1,
+                        12
+                    ],
+                    "message": "Ditt meddelande"
+                }
+            }
+
++ Response 204
