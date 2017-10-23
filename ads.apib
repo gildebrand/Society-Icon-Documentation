@@ -1,0 +1,207 @@
+# Group Ads
+
+## Get All Ads [/ads{company_id}]
+#### Get All Ads [GET]
+
++ Parameters
+
+    + company_id: `34` (required, number) - The company to get ads for.
+
++ Response 200 (application/json)
+
+		{  
+		   "ads":[  
+		      {  
+		         "id":5,
+		         "company_id":9,
+		         "status":"published",
+		         "social_media":"instagram",
+		         "content_type":"image",
+		         "name":"Emporio Armani",
+		         "influencer_picture":{  
+		            "id":"e21636a291a70dc7320f73121f2a734e",
+		            "width":600,
+		            "height":600,
+		            "type":"image",
+		            "url":"https://societyicon.com/storage/media/e21636a291a70dc7320f73121f2a734e.jpeg",
+		            "preview":"https://api.societyicon.com/api/media/e21636a291a70dc7320f73121f2a734e/preview",
+		            "lowresPreview":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEfUlEQVQ4jT2TS4idZx3Gf//39l3OmXPOzJzRziQzGdvGBCUxoOAFF0KEFgqCtRshknW60002LhRcFFxZcCG4CFQEEYRSEV2IQhqTtJoLooXG3CadpM1MZnIu3/nO+13e18WE/pfP4uH3PPwf+eVv/xR5dsVkjC9nTCcjkiRlVkxJsoydR9vk3QUWen1ECXmni/dzVtc3ARCJIMJkNMaIyDNRyDpdXJKQ9/poreiHgLWW4eoqSZLi5yXGWIzWiBKM1UAEBBEwRmOUUp8aWmcZj/cx2hBasM4RGk+SpNS1RymhrecoHInLSJwD4oGlCM4ajDKKA0pBKWHt8DqiFFprlMD7f3mHxcUBp751GjGGGCMxQIyBEAIxRiAiAj6xKGstxhisNTjncGlKmmW4NMXPxty/cpGHl/9Ov53yz7ffQvyIfj+n283odFLyPCHPE7IsIUsdxjqHiBxQGY1zBq0MN69d4+G9/3Fyc4XVwxvs/etdbl19l+LJY878+A181VDVFaENzyIDMWCyLEFEUFpjrMJay3/ff4+fnT+P1BU/Pfd9Tr/+I3auXWRlocM/Ll3iB7MRnd4QUxna0BJDQATyzGG6eXZAqBXaasrtu1Q3/kbXRMZlQ7X3iP/84QL7+/tsDAeM/Tq1L0mTBKU1MQYILRIjxIDKP+3BkWeOvdsfcOTbrzCatzQR3nj7Ms+/epaj3z3LW1dvcXVrxM7jPbQoUuvInSVLEpw1JNZi8sxBFJRWKA1rRz/P1t3bhBD55skXeeFzG8xuXCR5/iR3PhljneWzm8dIlMJoIaKIQFMpQgioRFqqeXHwQyJ85sVjFFt3ePXrx3nl5CEO6YJ/X7nMudd/yEKegkAzn1KVJSEEJEKsA6GNlMUc8+bPf4GvFWvrazRVzaGOwk6nbAxSfvXn99iaVCwvfkhUFusss3HBhd/8jrs3r/DSa2eZTUuUUjzeecq0LDB//eM7EAIiisU85blewofbO9Qu5/6TCSjD7t74YOxNy/LyCjsfPeD69Zsc//I9jh5Z48Kv3+Tl75yh8QE5cfxLsfElEiNV1RBCpA0tvq5p25oQI3XbUtQtoYVTJ45x7uVNkmbO7XHKo6qPTSIffzxhVHjM/pMnaHUwMyWKKCBa4wCMomlarCiKskCJ4nsvfY3XTnxEuVvwjfQw/a+eptN8wt3tp5w5/3vMvIbJbISgUICIYmWlT4OgTYLUDY2fkyVd2rahnHnazoBy3FCKoy+B7VHL2nLCwsICZvfpPjAHNEKGZCluaYkQFIvLSwyXhgx7HaZN4P6de6x+4SuodcWKucE4/SKdlU0GHUUxmSLWoIGfQIADPk6dOsah9VVaYKXXQZqaREUe7e4TYqSYe3bnA67sDLi1F5j6hEsfjLj+UDEjIOAiBMR00VnOkY3nGA4X0VpY7eU8Hc/R2rC1V7A06FI1LeVkwtRX7Dx4gGprCh/oLQ14YWOIEdHEqDDG0u11KXyNHk0xRqPnM0bjGXPf0CrNg/1dcqeJyuB9g/eetvKAovWewjf8H6/I9IqsB+HUAAAAAElFTkSuQmCC"
+		         },
+		         "influencer_short_text":"The perfect perfume for him and for her",
+		         "start_time":"2017-10-01T00:00:00+00:00",
+		         "end_time":"2017-10-04T00:00:00+00:00",
+		         "budget":100,
+		         "target_min_age":18,
+		         "target_max_age":36,
+		         "target_gender":"both",
+		         "share_content":{  
+		            "preview":{  
+		               "picture":{  
+		                  "url":"https://api.societyicon.com/api/media/e21636a291a70dc7320f73121f2a734e/preview"
+		               },
+		               "type":"image"
+		            }
+		         },
+		         "credit_card_id":"card_1B6lGyGRfHJrE3twjhubUF2k"
+		      }
+		   ]
+		}
+
+## Get Active Ads [/ads/active{company_id}]
+#### Get Active Ads [GET]
+
++ Parameters
+
+    + company_id: `34` (required, number) - The company to get ads for.
+
++ Response 200 (application/json)
+
+
+		{  
+		   "ads":[  
+		      {  
+		         "id":5,
+		         "company_id":9,
+		         "status":"published",
+		         "social_media":"instagram",
+		         "content_type":"image",
+		         "name":"Emporio Armani",
+		         "influencer_picture":{  
+		            "id":"e21636a291a70dc7320f73121f2a734e",
+		            "width":600,
+		            "height":600,
+		            "type":"image",
+		            "url":"https://societyicon.com/storage/media/e21636a291a70dc7320f73121f2a734e.jpeg",
+		            "preview":"https://api.societyicon.com/api/media/e21636a291a70dc7320f73121f2a734e/preview",
+		            "lowresPreview":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEfUlEQVQ4jT2TS4idZx3Gf//39l3OmXPOzJzRziQzGdvGBCUxoOAFF0KEFgqCtRshknW60002LhRcFFxZcCG4CFQEEYRSEV2IQhqTtJoLooXG3CadpM1MZnIu3/nO+13e18WE/pfP4uH3PPwf+eVv/xR5dsVkjC9nTCcjkiRlVkxJsoydR9vk3QUWen1ECXmni/dzVtc3ARCJIMJkNMaIyDNRyDpdXJKQ9/poreiHgLWW4eoqSZLi5yXGWIzWiBKM1UAEBBEwRmOUUp8aWmcZj/cx2hBasM4RGk+SpNS1RymhrecoHInLSJwD4oGlCM4ajDKKA0pBKWHt8DqiFFprlMD7f3mHxcUBp751GjGGGCMxQIyBEAIxRiAiAj6xKGstxhisNTjncGlKmmW4NMXPxty/cpGHl/9Ov53yz7ffQvyIfj+n283odFLyPCHPE7IsIUsdxjqHiBxQGY1zBq0MN69d4+G9/3Fyc4XVwxvs/etdbl19l+LJY878+A181VDVFaENzyIDMWCyLEFEUFpjrMJay3/ff4+fnT+P1BU/Pfd9Tr/+I3auXWRlocM/Ll3iB7MRnd4QUxna0BJDQATyzGG6eXZAqBXaasrtu1Q3/kbXRMZlQ7X3iP/84QL7+/tsDAeM/Tq1L0mTBKU1MQYILRIjxIDKP+3BkWeOvdsfcOTbrzCatzQR3nj7Ms+/epaj3z3LW1dvcXVrxM7jPbQoUuvInSVLEpw1JNZi8sxBFJRWKA1rRz/P1t3bhBD55skXeeFzG8xuXCR5/iR3PhljneWzm8dIlMJoIaKIQFMpQgioRFqqeXHwQyJ85sVjFFt3ePXrx3nl5CEO6YJ/X7nMudd/yEKegkAzn1KVJSEEJEKsA6GNlMUc8+bPf4GvFWvrazRVzaGOwk6nbAxSfvXn99iaVCwvfkhUFusss3HBhd/8jrs3r/DSa2eZTUuUUjzeecq0LDB//eM7EAIiisU85blewofbO9Qu5/6TCSjD7t74YOxNy/LyCjsfPeD69Zsc//I9jh5Z48Kv3+Tl75yh8QE5cfxLsfElEiNV1RBCpA0tvq5p25oQI3XbUtQtoYVTJ45x7uVNkmbO7XHKo6qPTSIffzxhVHjM/pMnaHUwMyWKKCBa4wCMomlarCiKskCJ4nsvfY3XTnxEuVvwjfQw/a+eptN8wt3tp5w5/3vMvIbJbISgUICIYmWlT4OgTYLUDY2fkyVd2rahnHnazoBy3FCKoy+B7VHL2nLCwsICZvfpPjAHNEKGZCluaYkQFIvLSwyXhgx7HaZN4P6de6x+4SuodcWKucE4/SKdlU0GHUUxmSLWoIGfQIADPk6dOsah9VVaYKXXQZqaREUe7e4TYqSYe3bnA67sDLi1F5j6hEsfjLj+UDEjIOAiBMR00VnOkY3nGA4X0VpY7eU8Hc/R2rC1V7A06FI1LeVkwtRX7Dx4gGprCh/oLQ14YWOIEdHEqDDG0u11KXyNHk0xRqPnM0bjGXPf0CrNg/1dcqeJyuB9g/eetvKAovWewjf8H6/I9IqsB+HUAAAAAElFTkSuQmCC"
+		         },
+		         "influencer_short_text":"The perfect perfume for him and for her",
+		         "start_time":"2017-10-01T00:00:00+00:00",
+		         "end_time":"2017-10-04T00:00:00+00:00",
+		         "budget":100,
+		         "target_min_age":18,
+		         "target_max_age":36,
+		         "target_gender":"both",
+		         "share_content":{  
+		            "preview":{  
+		               "picture":{  
+		                  "url":"https://api.societyicon.com/api/media/e21636a291a70dc7320f73121f2a734e/preview"
+		               },
+		               "type":"image"
+		            }
+		         },
+		         "credit_card_id":"card_1B6lGyGRfHJrE3twjhubUF2k"
+		      }
+		   ]
+		}
+
+## Get Ad [/ads/{ad_id}/]
+#### Get Ad [GET]
+
++ Parameters
+
+    + ad_id: `4` (required, number) - The ad ID.
+
++ Response 200 (application/json)
+
+
+		{  
+		   "ad":{  
+		      "id":5,
+		      "company_id":9,
+		      "status":"published",
+		      "social_media":"instagram",
+		      "content_type":"image",
+		      "name":"Emporio Armani",
+		      "influencer_picture":{  
+		         "id":"e21636a291a70dc7320f73121f2a734e",
+		         "width":600,
+		         "height":600,
+		         "type":"image",
+		         "url":"https:\/\/societyicon.com\/storage\/media\/e21636a291a70dc7320f73121f2a734e.jpeg",
+		         "preview":"https:\/\/api.societyicon.com\/api\/media\/e21636a291a70dc7320f73121f2a734e\/preview",
+		         "lowresPreview":"data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAEfUlEQVQ4jT2TS4idZx3Gf\/\/39l3OmXPOzJzRziQzGdvGBCUxoOAFF0KEFgqCtRshknW60002LhRcFFxZcCG4CFQEEYRSEV2IQhqTtJoLooXG3CadpM1MZnIu3\/nO+13e18WE\/pfP4uH3PPwf+eVv\/xR5dsVkjC9nTCcjkiRlVkxJsoydR9vk3QUWen1ECXmni\/dzVtc3ARCJIMJkNMaIyDNRyDpdXJKQ9\/poreiHgLWW4eoqSZLi5yXGWIzWiBKM1UAEBBEwRmOUUp8aWmcZj\/cx2hBasM4RGk+SpNS1RymhrecoHInLSJwD4oGlCM4ajDKKA0pBKWHt8DqiFFprlMD7f3mHxcUBp751GjGGGCMxQIyBEAIxRiAiAj6xKGstxhisNTjncGlKmmW4NMXPxty\/cpGHl\/9Ov53yz7ffQvyIfj+n283odFLyPCHPE7IsIUsdxjqHiBxQGY1zBq0MN69d4+G9\/3Fyc4XVwxvs\/etdbl19l+LJY878+A181VDVFaENzyIDMWCyLEFEUFpjrMJay3\/ff4+fnT+P1BU\/Pfd9Tr\/+I3auXWRlocM\/Ll3iB7MRnd4QUxna0BJDQATyzGG6eXZAqBXaasrtu1Q3\/kbXRMZlQ7X3iP\/84QL7+\/tsDAeM\/Tq1L0mTBKU1MQYILRIjxIDKP+3BkWeOvdsfcOTbrzCatzQR3nj7Ms+\/epaj3z3LW1dvcXVrxM7jPbQoUuvInSVLEpw1JNZi8sxBFJRWKA1rRz\/P1t3bhBD55skXeeFzG8xuXCR5\/iR3PhljneWzm8dIlMJoIaKIQFMpQgioRFqqeXHwQyJ85sVjFFt3ePXrx3nl5CEO6YJ\/X7nMudd\/yEKegkAzn1KVJSEEJEKsA6GNlMUc8+bPf4GvFWvrazRVzaGOwk6nbAxSfvXn99iaVCwvfkhUFusss3HBhd\/8jrs3r\/DSa2eZTUuUUjzeecq0LDB\/\/eM7EAIiisU85blewofbO9Qu5\/6TCSjD7t74YOxNy\/LyCjsfPeD69Zsc\/\/I9jh5Z48Kv3+Tl75yh8QE5cfxLsfElEiNV1RBCpA0tvq5p25oQI3XbUtQtoYVTJ45x7uVNkmbO7XHKo6qPTSIffzxhVHjM\/pMnaHUwMyWKKCBa4wCMomlarCiKskCJ4nsvfY3XTnxEuVvwjfQw\/a+eptN8wt3tp5w5\/3vMvIbJbISgUICIYmWlT4OgTYLUDY2fkyVd2rahnHnazoBy3FCKoy+B7VHL2nLCwsICZvfpPjAHNEKGZCluaYkQFIvLSwyXhgx7HaZN4P6de6x+4SuodcWKucE4\/SKdlU0GHUUxmSLWoIGfQIADPk6dOsah9VVaYKXXQZqaREUe7e4TYqSYe3bnA67sDLi1F5j6hEsfjLj+UDEjIOAiBMR00VnOkY3nGA4X0VpY7eU8Hc\/R2rC1V7A06FI1LeVkwtRX7Dx4gGprCh\/oLQ14YWOIEdHEqDDG0u11KXyNHk0xRqPnM0bjGXPf0CrNg\/1dcqeJyuB9g\/eetvKAovWewjf8H6\/I9IqsB+HUAAAAAElFTkSuQmCC"
+		      },
+		      "influencer_short_text":"The perfect perfume for him and for her",
+		      "start_time":"2017-10-01T00:00:00+00:00",
+		      "end_time":"2017-10-04T00:00:00+00:00",
+		      "budget":100,
+		      "target_min_age":18,
+		      "target_max_age":36,
+		      "target_gender":"both",
+		      "share_content":{  
+		         "preview":{  
+		            "picture":{  
+		               "url":"https:\/\/api.societyicon.com\/api\/media\/e21636a291a70dc7320f73121f2a734e\/preview"
+		            },
+		            "type":"image"
+		         }
+		      },
+		      "credit_card_id":"card_1B6lGyGRfHJrE3twjhubUF2k",
+		      "target_locations":[  
+		         {  
+		            "id":1,
+		            "parent_id":null,
+		            "name":"Sweden",
+		            "location_type":"country",
+		            "created_at":"2017-07-06 10:27:46",
+		            "updated_at":"2017-07-06 10:27:46",
+		            "deleted_at":null,
+		            "pivot":{  
+		               "ad_id":5,
+		               "location_id":1
+		            }
+		         }
+		      ]
+		   }
+		}
+
+## Get Ad Stats [/ads/{ad_id}/stats]
+#### Get Ad Stats [GET]
+
++ Parameters
+
+    + ad_id: `4` (required, number) - The ad ID.
+
++ Response 200 (application/json)
+
+
+		{  
+		   "stats":[  
+		      {  
+		         "type":"influencers",
+		         "present":"value",
+		         "title":"Influencers",
+		         "unit":"people",
+		         "value":4
+		      },
+		      {  
+		         "type":"reach",
+		         "present":"value",
+		         "title":"Reached audience",
+		         "unit":"people",
+		         "value":7719
+		      },
+		      {  
+		         "type":"interactions",
+		         "present":"value",
+		         "title":"Interactions",
+		         "unit":"likes \/ comments \/ shares",
+		         "value":25
+		      },
+		      {  
+		         "type":"georeach",
+		         "present":"map",
+		         "title":"Activity",
+		         "value":[  
+
+		         ]
+		      },
+		      {  
+		         "type":"engagement_rate",
+		         "present":"value",
+		         "title":"Engagement rate",
+		         "value":"0.3%"
+		      }
+		   ]
+		}
