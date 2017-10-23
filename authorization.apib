@@ -1,57 +1,61 @@
-# Group Authorization
+# Group Influencer Authorization
 
-## Token [/oauth/v2/tokens]
-
-### Create token [POST]
-Generate a new access token.
-
-+ Request Password grant (application/json)
-
-        {
-            "client_id": "CLIENT_ID_HERE",
-            "client_secret": "CLIENT_SECRET_HERE",
-            "grant_type": "password",
-            "username": "user@gmail.com",
-            "password": "example_password"
-        }
-
-+ Request Authorization code grant (application/json)
-
-        {
-            "client_id": "CLIENT_ID_HERE",
-            "client_secret": "CLIENT_SECRET_HERE",
-            "grant_type": "authorization_code",
-            "code": "ZTBkNjgwNWM4YWUwZjM0ZDg4N2U1NGMyODU5ZmYxNzJkNzdmYmEwODUxODhmNjViOGFkMTIyOWFlNWM0M2UyOA",
-            "redirect_uri": "DESIRED_REDIRECT_URI"
-        }
-
-+ Request Refresh token grant (application/json)
-
-        {
-            "client_id": "CLIENT_ID_HERE",
-            "client_secret": "CLIENT_SECRET_HERE",
-            "grant_type": "refresh_token",
-            "refresh_token": "MmI0ZmVjNDdjMGVkZmQ1MjM0YzJhMWUzZGIyODA5MjlhM2JmM2YzNjI1MDc5MGUxMWEzNDc4NjkwNzM4MzhiMA"
-        }
-
-+ Response 201 (application/json)
-
-    + Body
-
-            {"access_token":"YTBmNDk3NDVmZDc3MjEwYzgxZmYxNTE3M2RlZDA0NWJhNTA0Y2ZiNmJkMjdhNDI5NDA1ZWMyMTQ1OWFmYTExNw","expires_in":3600,"token_type":"bearer","scope":null,"refresh_token":"MmI0ZmVjNDdjMGVkZmQ1MjM0YzJhMWUzZGIyODA5MjlhM2JmM2YzNjI1MDc5MGUxMWEzNDc4NjkwNzM4MzhiMA"}
-
-+ Response 400 (aspplication/json)
-
-    + Body
-
-            {"error":"invalid_grant","error_description":"Invalid username and password combination"}
-
-
-## Invalidate token [/oauth/v2/tokens/invalidate]
-
-### Invalidate token [DELETE]
-Invalidate the access token, used to make the request.
+## Facebook login [/auth/facebook]
+#### Facebook login [POST]
 
 + Request (application/json)
+    
+        {
+            "token": "EAAIM5I55La0BAOtiTwU4bJQQyRc2VYG8odyooXehp15507Brb47SCCQNdp9AVyZCHkIhd0v7RZBf98DfFkwFFRis8IClv3B32fTBGVQeX2Ku9wwGJzuV2yhuddc5OvkMpvspFrVz8EoVkMdh3O66MeQnjXGjOqGpzg37NPtm4WDZAxd9TJp0ZAIORFuV8jeFXGCZBATHN1tSKIbBZBqz4yMPG6O1vMfYlaZAQogINCikAZDZD"
+        }
 
-+ Response 204
++ Response (application/json)
+    
+        {
+            "user": {
+                "id": 1,
+                "first_name": "Anton",
+                "last_name": "Gildebrand",
+                "email": "antongildebrand@gmail.com",
+                "social_medias": {
+                    "instagram": {
+                        "id": "5394285351",
+                        "followers_count": 2,
+                        "user_name": "soic_insta",
+                        "profile_picture": "https:\/\/scontent-eze1-1.cdninstagram.com\/t51.2885-19\/11906329_960233084022564_1448528159_a.jpg"
+                    },
+                    "facebook": {
+                        "id": "10154271896304652",
+                        "followers_count": 303,
+                        "user_name": "10154271896304652",
+                        "profile_picture": "https:\/\/scontent.xx.fbcdn.net\/v\/t1.0-1\/c42.42.528.528\/s50x50\/968821_10151488587774652_363422709_n.jpg?oh=70643f49dc4a15c5cac83fcfc44536e6&oe=5A79DE94"
+                    }
+                },
+                "birthdate": null,
+                "address": null,
+                "picture": {
+                    "url": "https:\/\/graph.facebook.com\/v2.8\/10154271896304652\/picture?width=800"
+                },
+                "active_external_account": null,
+                "preferences": {
+                    "notifications.push.new_ads": true,
+                    "notifications.push.processed_payments": true,
+                    "notifications.email.newsletter": false
+                }
+            },
+            "token": {
+                "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImZkNmYyOTVkODJiNjNiNjIyNWNmZTYxMDBmMjYxZDZiYmU4NGRhOGRhYWZiNjFhNDQzMDIxYzFiZGM0NTI0MjdjMTc0NWU2YWI0NTc4Zjk5In0.eyJhdWQiOiI1IiwianRpIjoiZmQ2ZjI5NWQ4MmI2M2I2MjI1Y2ZlNjEwMGYyNjFkNmJiZTg0ZGE4ZGFhZmI2MWE0NDMwMjFjMWJkYzQ1MjQyN2MxNzQ1ZTZhYjQ1NzhmOTkiLCJpYXQiOjE1MDg3MDM5ODEsIm5iZiI6MTUwODcwMzk4MSwiZXhwIjoxODI0MjM2NzgxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.gqg9T0b2zvrkn5NLHdX6B64aAAYbIjf18yjs-UTsKHgdxY_kwZxajvWRWfSf8v_E6R97H-0tVwQeV8exEYLqYCCIV11aNsMrpEYT76XkBazdh0HbdehAQciY_RTlGSbcL1B-wPfum2RN8wHZoeSZqI51k8t1ySo0JVjgmF3W43s1kPG48HlTLC2dZgBebsG9QGdpQgVQWalG6G603uiq6Vm2xs0EK-peYNtVTmXiMxI85qxuVnHjdTtvpPJCTbWOIKNxQI10K6AKxenspO2KEMgkYn-GkQ0BBNnCjpaNHvfDDAZlbukNRCnPJrPRQeUslF2YS-mvkzEkSOTEEqRYpd9Pm830IiwDUK0jRBCA1MOqA_5ypr03bRIKX5YVfyD-_JWsM3CHcZuCmxXCW8g6orh8xJZq18F3GB5hxIgDmUeak-zyp2srhKmcybkpXm0_G1xOMFCx_yAbdi0sIrpY1UWUN_ZqOIKQO-yHPgzRyHrlngNBXSyPOJmp9EdRaLIRNiIO2SQQVmrhMt_-2sWhv3aROhgW8FsRZWzPN3HKzHIoU3NOMQJkmL2r2hl4orxc4MNVh2SPf-If0kejtumoFnaFBcKizQEMS9_y9C_Gyw3P4uYRqTijA8vRpIkqHvjyOJHKY7I9cnXdxCWfnUQV6sGi5fbScNsUqohASkloGKA",
+                "token": {
+                    "id": "fd6f295d82b63b6225cfe6100f261d6bbe84da8daafb61a443021c1bdc452427c1745e6ab4578f99",
+                    "user_id": 1,
+                    "client_id": 5,
+                    "name": "Client token",
+                    "scopes": [],
+                    "revoked": false,
+                    "created_at": "2017-10-22 20:26:21",
+                    "updated_at": "2017-10-22 20:26:21",
+                    "expires_at": "2027-10-22 20:26:21"
+                }
+            }
+        }
+
