@@ -1,378 +1,62 @@
 # Group Users
 
-## Users [/users{?email}]
-
-#### Get users [GET]
-
-#### Permissions requirements
-* Super admin
-* Admin for an organization
+## Get Users [/users{email}]
+#### Get Users [GET]
 
 + Parameters
 
-    + email: `email@domain.com` (required, string) - Email to search for user by.
+    + email: `antongildebrand@gmail.com` (required, string) - Search for users with this email
 
-+ Request (application/json)
++ Response 200 (application/json)
+    
+        {  
+           "user":{  
+              "id":39,
+              "first_name":"Anton",
+              "last_name":"Gildebrand",
+              "email":"antongildebrand@gmail.com"
+           }
+        }
 
 + Response 200 (application/json)
 
-    + Body
+        {
+            "user": null
+        }
 
-            {"users":[{"id":1,"email":"salesman@gmail.com","first_name":"Hampus","last_name":"Iggstr\u00f6m"}]}
 
-+ Response 400 (application/json)
-
-    + Body
-
-            {"errors":["Missing query parameter 'email'"]}
-
-#### Create user [POST]
-
-#### Permissions requirements
-* Super admin
-* Admin role for an organization
+## Create User [/users]
+#### Create User [POST]
 
 + Request (application/json)
 
-    + Body
-
-            {
-                "user": {
-                    "email": "hampus_new@gmail.com"
-                }
+        {
+            "user": {
+                "email": "123hjnagdfnjk@asdgnjsd.com"
+            },
+            "organization": {
+                "id": 9
             }
+        }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
+    
+        {  
+           "user":{  
+              "id":39,
+              "first_name":"Anton",
+              "last_name":"Gildebrand",
+              "email":"antongildebrand@gmail.com"
+           }
+        }
 
-    + Body
++ Response 200 (application/json)
 
-            {"user":{"id":5,"email":"new_email@gmail.com"}}
-
-+ Response 400 (application/json)
-
-    + Body
-
-            {"form":{"children":{"email":{"errors":["This value should not be blank."]}}}}
-
-
-## Import multiple users [/users/import]
-
-#### Import users [POST]
-
-Create multiple user at once. Salesman role will be added for the given organization to the imported users.
-
-#### Permissions requirements
-* Super admin
-* Admin role for the given organization
-
-+ Request (application/json)
-
-    + Body
-
-            {
-              "user_import": {
-                "emails": [
-                  "hampus+671@spire.se",
-                  "hampus@spire.se",
-                  "invalid_email@invalid"
-                ],
-                "organization": 1
-              }
+        {
+            "user": {
+                "id":91,
+                "first_name":null,
+                "last_name":null,
+                "email":"123hjnagdfnjk@asdgnjsd.com"
             }
-
-+ Response 201 (application/json)
-
-    + Body
-
-            {"imported":["hampus+671@spire.se"],"existing":["hampus@spire.se"],"invalid":["invalid_email@invalid"]}
-
-+ Response 400 (application/json)
-
-    + Body
-
-            {"form":{"children":{"organization":{"errors":["This value should not be null."]},"emails":{}}}}
-
-## User [/users/{id}]
-
-+ Parameters
-
-    + id: `34` (required, number|string) - The user ID or 'me'.
-
-#### Get user [GET]
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Request (application/json)
-
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {"users":[{"id":1,"email":"salesman@gmail.com","first_name":"Hampus","last_name":"Iggstr\u00f6m"}]}
-
-#### Update user [PATCH]
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Request (application/json)
-
-    + Body
-
-            {
-                "user": {
-                    "email": "salesman@gmail.com",
-                    "first_name": "Hampus",
-                    "last_name": "Iggström",
-                    "gender": "male",
-                    "date_of_birth": "1987-09-12"
-                }
-            }
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {"user":{"id":1,"email":"salesman@gmail.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","date_of_birth":"1987-09-12T00:00:00+0000","gender":"male","profile_picture":{"url":"http:\/\/appi.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/1872bf001652eb3399477e0f75b88612ba5ae319.jpeg"}}}
-
-+ Response 400 (application/json)
-
-    + Body
-
-            {"form":{"children":{"email":{"errors":["This value should not be blank."]},"first_name":{},"last_name":{}}}}
-
-
-## Reset password [/users/resetpassword{?email}]
-
-#### Reset password [GET]
-Will send a single login token to the user identified by the `email` parameter. Will return `HTTP 404 Not Found` if no user could be found by the given email.  
-
-+ Parameters
-
-    + email: `email@domain.com` (required, string) - Email of user to start reset password flow for.
-
-+ Request (application/json)
-
-+ Response 204 (application/json)
-
-+ Response 400 (application/json)
-
-    + Body
-
-            {"errors":["Missing query parameter 'email'"]}
-
-+ Response 404 (application/json)
-
-## Profile picture [/users/{id}/pictures]
-
-+ Parameters
-
-    + id: `34` (required, number|string) - The user ID or 'me'.
-
-#### Upload profile picture [POST]
-
-Upload a new profile picture for an user. The picture will be cropped in a square. Supported file format is png, jpeg.
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Request (multipart/form-data; charset=utf-8; boundary=CONTENT)
-
-    + Body
-
-            --CONTENT
-            Content-Disposition: form-data; name="upload[file]"; filename="name.png"
-            Content-Type: image/png
-
-            PNG
-
-            ..PNG-body..
-
-
-+ Response 201 (application/json)
-
-    + Body
-
-            {"user":{"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/1bc3d82a4ed70e77115537de333bff1ca28ceb24.jpeg"}}
-
-#### Remove profile picture [DELETE]
-
-Removes the current profile picture from the given user.
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Request (application/json)
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {"user":{"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m"}}
-
-## Push tokens [/users/{id}/pushtokens]
-
-+ Parameters
-
-    + id: `34` (required, number|string) - The user ID or 'me'.
-
-### Create push token [POST]
-
-Add a push token to a given user, if the token already and belongs to another user its ownership will be transfered to the given user object.
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Request (application/json)
-
-    + Body
-
-            {
-                "push_token": {
-                    "token": "5ea27322b3e2f9fc933eba6a5be9a17241a89a89042ddcd8708590a750e38bd3"
-                }
-            }
-
-+ Response 204
-
-+ Response 400 (application/json)
-
-    + Body
-
-            {"form":{"children":{"token":{"errors":["This value should have exactly 64 characters."]}}}}
-
-## Firebase tokens [/users/{id}/firebasetokens]
-
-+ Parameters
-
-    + id: `34` (required, number|string) - The user ID or 'me'.
-
-### Add firebase token [POST]
-
-Add a firebase token to a given user, if the token already and belongs to another user its ownership will be transfered to the given user object.
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Request (application/json)
-
-    + Body
-
-            {
-                "firebase_token": {
-                    "token": "5ea27322b3e2f9fc933eba6a5be9a17241a89a89042ddcd8708590a750e38bd3"
-                }
-            }
-
-+ Response 204
-
-## User permissions [/users/{id}/permissions]
-
-+ Parameters
-
-    + id: `34` (required, number|string) - The user ID or 'me'.
-
-### Get permissions [GET]
-
-+ Request (application/json)
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {"permissions":{"system":{"users":["view","edit"],"organizations":["view","edit"]},"organizations":{"organization":{"id":1,"name":"Spire"},"permissions":{"organization":["view","edit"],"user_management":["view","edit"]}}},"user":{"id":1,"email":"hampus@spire.se","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/1872bf001652eb3399477e0f75b88612ba5ae319.jpeg"}}}
-
-## Followups [/users/{id}/followups{?organization_id}{?state}]
-
-#### Get followups [GET]
-Get followups that the given user **participates or observes**.
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Parameters
-
-    + id: `34` (required, number|string) - The user ID or 'me'.
-    + organization_id: `89` (optional, number) - The organization ID to filter followups by.
-    + state: `upcoming`  (optional, enum[string]) - State for followups to get.
-        + Default: `active`
-
-        + Members
-            + `all`
-            + `upcoming`
-            + `active`
-            + `upcoming_or_active`
-            + `expired`
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {"followups":{"id":684,"name":"Kapslar till kaffemaskin","start_date":"2017-07-31T22:00:00+0000","end_date":"2017-08-30T22:00:00+0000","organization":{"id":1,"name":"Spire"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/api.pushappy.com\/v1\/users\/8\/pictures\/default","generated":true}}],"team_participants":[],"observers":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"administrators":[],"followup_products":[{"id":1732,"product":{"id":1732,"name":"Gr\u00f6na"},"points":2,"product_descriptions":[],"color":"#3498db","stats":{"quantity":3,"points":6,"revenue":0,"quantity_forecast":4,"revenue_forecast":0,"points_forecast":8},"user_stats":{"quantity":3,"points":6,"revenue":0,"quantity_forecast":4,"revenue_forecast":0,"points_forecast":8}},{"id":1733,"product":{"id":1733,"name":"R\u00f6da"},"points":3,"product_descriptions":[],"color":"#9e5fb9","stats":{"quantity":1,"points":3,"revenue":0,"quantity_forecast":1,"revenue_forecast":0,"points_forecast":4},"user_stats":{"quantity":1,"points":3,"revenue":0,"quantity_forecast":1,"revenue_forecast":0,"points_forecast":4}}],"status":"published","created_by":{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"user_stats":{"quantity":4,"points":9,"revenue":0,"points_goal":50,"points_relative_setpoint":0.78,"quantity_forecast":5,"revenue_forecast":0,"points_forecast":11,"points_progress":0.18},"stats":{"quantity":4,"points":18,"revenue":0,"quantity_forecast":5,"revenue_forecast":0,"points_forecast":23}}}
-
-## Followups [/users/{id}/followups/participating{?organization_id}{?state}]
-
-#### Get followups participating [GET]
-Get followups that the given user **participates in**. 
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Parameters
-
-    + id: `34` (required, number|string) - The user ID or 'me'.
-    + organization_id: `89` (optional, number) - The organization ID to filter followups by.
-    + state: `upcoming`  (optional, enum[string]) - State for followups to get.
-        + Default: `active`
-
-        + Members
-            + `all`
-            + `upcoming`
-            + `active`
-            + `upcoming_or_active`
-            + `expired`
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {"followups":{"id":684,"name":"Kapslar till kaffemaskin","start_date":"2017-07-31T22:00:00+0000","end_date":"2017-08-30T22:00:00+0000","organization":{"id":1,"name":"Spire"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/api.pushappy.com\/v1\/users\/8\/pictures\/default","generated":true}}],"team_participants":[],"observers":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"administrators":[],"followup_products":[{"id":1732,"product":{"id":1732,"name":"Gr\u00f6na"},"points":2,"product_descriptions":[],"color":"#3498db","stats":{"quantity":3,"points":6,"revenue":0,"quantity_forecast":4,"revenue_forecast":0,"points_forecast":8},"user_stats":{"quantity":3,"points":6,"revenue":0,"quantity_forecast":4,"revenue_forecast":0,"points_forecast":8}},{"id":1733,"product":{"id":1733,"name":"R\u00f6da"},"points":3,"product_descriptions":[],"color":"#9e5fb9","stats":{"quantity":1,"points":3,"revenue":0,"quantity_forecast":1,"revenue_forecast":0,"points_forecast":4},"user_stats":{"quantity":1,"points":3,"revenue":0,"quantity_forecast":1,"revenue_forecast":0,"points_forecast":4}}],"status":"published","created_by":{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"user_stats":{"quantity":4,"points":9,"revenue":0,"points_goal":50,"points_relative_setpoint":0.78,"quantity_forecast":5,"revenue_forecast":0,"points_forecast":11,"points_progress":0.18},"stats":{"quantity":4,"points":18,"revenue":0,"quantity_forecast":5,"revenue_forecast":0,"points_forecast":23}}}
-
-## Followups [/users/{id}/followups/overview{?organization_id}{?state}]
-
-#### Get followups observing [GET]
-Get followups that the given user observes or participates. The response will contain sales statistics, goals and setpoints for products and participating users.
-
-#### Permissions requirements
-* Super admin
-* Own user object
-
-+ Parameters
-
-    + id: `34` (required, number|string) - The user ID or 'me'.
-    + organization_id: `89` (optional, number) - The organization ID to filter followups by.
-    + state: `upcoming`  (optional, enum[string]) - State for followups to get.
-        + Default: `active`
-
-        + Members
-            + `all`
-            + `upcoming`
-            + `active`
-            + `upcoming_or_active`
-            + `expired`
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {"followups":{"id":684,"name":"Kapslar till kaffemaskin","start_date":"2017-07-31T22:00:00+0000","end_date":"2017-08-30T22:00:00+0000","organization":{"id":1,"name":"Spire"},"user_participants":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},{"id":8,"email":"andreas@spire.se","first_name":"Andreas","last_name":"Valeg\u00e5rd","profile_picture":{"url":"http:\/\/api.pushappy.com\/v1\/users\/8\/pictures\/default","generated":true}}],"team_participants":[],"observers":[{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}}],"administrators":[],"followup_products":[{"id":1732,"product":{"id":1732,"name":"Gr\u00f6na"},"points":2,"product_descriptions":[],"color":"#3498db","stats":{"quantity":3,"points":6,"revenue":0,"quantity_forecast":4,"revenue_forecast":0,"points_forecast":8},"user_stats":{"quantity":3,"points":6,"revenue":0,"quantity_forecast":4,"revenue_forecast":0,"points_forecast":8}},{"id":1733,"product":{"id":1733,"name":"R\u00f6da"},"points":3,"product_descriptions":[],"color":"#9e5fb9","stats":{"quantity":1,"points":3,"revenue":0,"quantity_forecast":1,"revenue_forecast":0,"points_forecast":4},"user_stats":{"quantity":1,"points":3,"revenue":0,"quantity_forecast":1,"revenue_forecast":0,"points_forecast":4}}],"status":"published","created_by":{"id":1,"email":"hampus@iggstrom.com","first_name":"Hampus","last_name":"Iggstr\u00f6m","profile_picture":{"url":"http:\/\/api.pushappy.com\/media\/cache\/profile_picture\/uploads\/images\/dd39c216bc8326fbe9fe81b0979f32aaea589d48.jpeg"}},"user_stats":{"quantity":4,"points":9,"revenue":0,"points_goal":50,"points_relative_setpoint":0.78,"quantity_forecast":5,"revenue_forecast":0,"points_forecast":11,"points_progress":0.18},"stats":{"quantity":4,"points":18,"revenue":0,"quantity_forecast":5,"revenue_forecast":0,"points_forecast":23}}}
+        }
