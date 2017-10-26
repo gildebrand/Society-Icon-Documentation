@@ -60,3 +60,68 @@
                 "email":"123hjnagdfnjk@asdgnjsd.com"
             }
         }
+
+
+## User Stats [/users/{user_id}/stats]
+#### User Stats [GET]
+Response property `stats.value` is always in USD. 
+
++ Parameters
+
+    + user_id: `1` (required, number) - User id to get stats for
+
++ Response 200 (application/json)
+
+        {
+          "stats": {
+            "instagram": {
+              "followers_count": 200,
+              "posts_count": 9,
+              "value": 30.2
+            }
+          }
+        }
+
+
+## User Active Campaign [/users/{user_id}/activecampaign]
+#### User Active Campaign [GET]
+
++ Parameters
+
+    + user_id: `1` (required, number) - User id to get active campaign for
+
++ Response 200 (application/json)
+
+        {
+          "campaign_share": {
+            "id": 18,
+            "campaign": {
+              "id": 6,
+              "name": "Bunny",
+              "social_media": "instagram",
+              "company": {
+                "id": 1,
+                "name": "Kodfabriken Uppsala AB"
+              },
+              "influencer_picture": {
+                "url": {
+                  "id": "f13004eed4251c602bbe15737e8a1ecb",
+                  "width": 640,
+                  "height": 360,
+                  "type": "video",
+                  "url": "http:\/\/societyicon.dev\/storage\/media\/f13004eed4251c602bbe15737e8a1ecb.mp4",
+                  "preview": "http:\/\/societyicon.dev\/api\/media\/f13004eed4251c602bbe15737e8a1ecb\/preview",
+                  "lowresPreview": "data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB\/Ca1DAAACmElEQVQokQXBTYsbZQDA8f\/zNi+ZvG2yySZs0gpr14UKFlGqgocqsXoRPHjWSwUPQr+HX6CHfpWCdxFlVaqrB7EN3a7dvM0kk5nnmXn8\/cSDb7\/0KMnRWYs4zplfrimXFldo1quc0pZIY0hTC95iK4eMm9jNBiUbSN+mchU0FCIw6JuHTTaFp9p6Kpmgq\/\/Iih1+qzCNkNgX5AZkKSgz8AqwJQqJswXsU2o8vtLIdgO5yHL2VYWvKqLAcNgZc\/PoBvc\/\/oxP3p8RNzucHp9w\/4NPCZoVJmxw78MZotWh3hsq56jrGqTAuRq9dxJLzX5lsbLGV4JBNGA2+wohBF98\/jVPf3zC9Ow9ZrMZWgTsc8utyRs8evwYLyQuLxCBwRuNXhUOlKapE3YbR\/qqZKszVuuM5fIag2UymfJiPieIYs7\/uWDc67NZbTBGUWMgAqREKYUsZZvMxVzlilXR5XonSSZTjo+7nJ6MmBz3KWTI6dkthPTcfecuaV7wy98XmOEAbxRxL6F12KTfD9FZ7vAm56A\/pFo8Yzzacu\/NNf8+\/Y7ff77k+QvPb3+1SdcvSes9Sb+DG7\/NxkXYaIw\/6GH3l3S7E86GLfSgd4FQnnb5nLfuKF6fKtL5HX69PgctyYTgKl3wx\/mch98c0ZvW\/PDnTyT0WKYvwXu6By3efe02\/TBEPPz+I9+JNCdHnk7syHaOq5XEekgzWGeWYV\/iUsm4KynCisWmpvSSKIwwOJLAM+4rtPDoxauKpap4dlXTCEPiGHAgZI0JPMOhIQklUUeQbipGHcloIBn0DJ0QBoctGnGJLWuEEOhmU2FUSGm3WOvQgaByNXEsCbWglQhu9ASdWHB4WzAaBCRJF9SOfJVAsKDYedLUE8U1\/wPo1CO6EdX3fgAAAABJRU5ErkJggg=="
+                }
+              }
+            },
+            "payoff": {
+              "currency": "USD",
+              "value": 10
+            },
+            "start_time": "2017-10-22 14:33:42",
+            "end_time": "2017-10-30 14:33:42"
+          }
+        }
+
++ Response 204
