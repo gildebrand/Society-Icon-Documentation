@@ -1,0 +1,137 @@
+#Group Campaign Shares
+
+# Available for Sharing [/shares/available]
+## Available for Sharing  [GET]
+
++ Response 204
+
++ Response 200 (application/json)
+
+		{
+		  "ads": [
+		    {
+		      "id": 18,
+		      "name": "Bunny",
+		      "social_media": "instagram",
+		      "content_type": "video",
+		      "company": {
+		        "id": 1,
+		        "name": "Kodfabriken Uppsala AB"
+		      },
+		      "influencer_picture": {
+		        "id": "f13004eed4251c602bbe15737e8a1ecb",
+		        "width": 640,
+		        "height": 360,
+		        "type": "video",
+		        "url": "http:\/\/societyicon.dev\/storage\/media\/f13004eed4251c602bbe15737e8a1ecb.mp4",
+		        "preview": "http:\/\/societyicon.dev\/api\/media\/f13004eed4251c602bbe15737e8a1ecb\/preview",
+		        "lowresPreview": "data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB\/Ca1DAAACmElEQVQokQXBTYsbZQDA8f\/zNi+ZvG2yySZs0gpr14UKFlGqgocqsXoRPHjWSwUPQr+HX6CHfpWCdxFlVaqrB7EN3a7dvM0kk5nnmXn8\/cSDb7\/0KMnRWYs4zplfrimXFldo1quc0pZIY0hTC95iK4eMm9jNBiUbSN+mchU0FCIw6JuHTTaFp9p6Kpmgq\/\/Iih1+qzCNkNgX5AZkKSgz8AqwJQqJswXsU2o8vtLIdgO5yHL2VYWvKqLAcNgZc\/PoBvc\/\/oxP3p8RNzucHp9w\/4NPCZoVJmxw78MZotWh3hsq56jrGqTAuRq9dxJLzX5lsbLGV4JBNGA2+wohBF98\/jVPf3zC9Ow9ZrMZWgTsc8utyRs8evwYLyQuLxCBwRuNXhUOlKapE3YbR\/qqZKszVuuM5fIag2UymfJiPieIYs7\/uWDc67NZbTBGUWMgAqREKYUsZZvMxVzlilXR5XonSSZTjo+7nJ6MmBz3KWTI6dkthPTcfecuaV7wy98XmOEAbxRxL6F12KTfD9FZ7vAm56A\/pFo8Yzzacu\/NNf8+\/Y7ff77k+QvPb3+1SdcvSes9Sb+DG7\/NxkXYaIw\/6GH3l3S7E86GLfSgd4FQnnb5nLfuKF6fKtL5HX69PgctyYTgKl3wx\/mch98c0ZvW\/PDnTyT0WKYvwXu6By3efe02\/TBEPPz+I9+JNCdHnk7syHaOq5XEekgzWGeWYV\/iUsm4KynCisWmpvSSKIwwOJLAM+4rtPDoxauKpap4dlXTCEPiGHAgZI0JPMOhIQklUUeQbipGHcloIBn0DJ0QBoctGnGJLWuEEOhmU2FUSGm3WOvQgaByNXEsCbWglQhu9ASdWHB4WzAaBCRJF9SOfJVAsKDYedLUE8U1\/wPo1CO6EdX3fgAAAABJRU5ErkJggg=="
+		      },
+		      "payoff": {
+		        "currency": "USD",
+		        "value": 10
+		      },
+		      "share_content": {
+		        "preview": {
+		          "picture": {
+		            "url": "http:\/\/societyicon.dev\/api\/media\/f13004eed4251c602bbe15737e8a1ecb\/preview"
+		          },
+		          "type": "video"
+		        }
+		      },
+		      "description": "Hello world!"
+		    }
+		  ]
+		}
+
+
+# Get Share [/shares/{share_id}]
+## Get Share [GET]
+
++ Parameters
+
+	+ share_id: `18` (required, number) - The share ID.
+
++ Response 200 (application/json)
+	
+		{
+		  "ad": {
+		    "id": 18,
+		    "name": "Bunny",
+		    "social_media": "instagram",
+		    "company": {
+		      "id": 1,
+		      "name": "Kodfabriken Uppsala AB"
+		    },
+		    "influencer_picture": {
+		      "url": {
+		        "id": "f13004eed4251c602bbe15737e8a1ecb",
+		        "width": 640,
+		        "height": 360,
+		        "type": "video",
+		        "url": "http:\/\/societyicon.dev\/storage\/media\/f13004eed4251c602bbe15737e8a1ecb.mp4",
+		        "preview": "http:\/\/societyicon.dev\/api\/media\/f13004eed4251c602bbe15737e8a1ecb\/preview",
+		        "lowresPreview": "data:image\/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB\/Ca1DAAACmElEQVQokQXBTYsbZQDA8f\/zNi+ZvG2yySZs0gpr14UKFlGqgocqsXoRPHjWSwUPQr+HX6CHfpWCdxFlVaqrB7EN3a7dvM0kk5nnmXn8\/cSDb7\/0KMnRWYs4zplfrimXFldo1quc0pZIY0hTC95iK4eMm9jNBiUbSN+mchU0FCIw6JuHTTaFp9p6Kpmgq\/\/Iih1+qzCNkNgX5AZkKSgz8AqwJQqJswXsU2o8vtLIdgO5yHL2VYWvKqLAcNgZc\/PoBvc\/\/oxP3p8RNzucHp9w\/4NPCZoVJmxw78MZotWh3hsq56jrGqTAuRq9dxJLzX5lsbLGV4JBNGA2+wohBF98\/jVPf3zC9Ow9ZrMZWgTsc8utyRs8evwYLyQuLxCBwRuNXhUOlKapE3YbR\/qqZKszVuuM5fIag2UymfJiPieIYs7\/uWDc67NZbTBGUWMgAqREKYUsZZvMxVzlilXR5XonSSZTjo+7nJ6MmBz3KWTI6dkthPTcfecuaV7wy98XmOEAbxRxL6F12KTfD9FZ7vAm56A\/pFo8Yzzacu\/NNf8+\/Y7ff77k+QvPb3+1SdcvSes9Sb+DG7\/NxkXYaIw\/6GH3l3S7E86GLfSgd4FQnnb5nLfuKF6fKtL5HX69PgctyYTgKl3wx\/mch98c0ZvW\/PDnTyT0WKYvwXu6By3efe02\/TBEPPz+I9+JNCdHnk7syHaOq5XEekgzWGeWYV\/iUsm4KynCisWmpvSSKIwwOJLAM+4rtPDoxauKpap4dlXTCEPiGHAgZI0JPMOhIQklUUeQbipGHcloIBn0DJ0QBoctGnGJLWuEEOhmU2FUSGm3WOvQgaByNXEsCbWglQhu9ASdWHB4WzAaBCRJF9SOfJVAsKDYedLUE8U1\/wPo1CO6EdX3fgAAAABJRU5ErkJggg=="
+		      }
+		    },
+		    "payoff": {
+		      "currency": "USD",
+		      "value": 10
+		    },
+		    "share_content": {
+		      "preview": {
+		        "picture": {
+		          "url": "http:\/\/societyicon.dev\/api\/media\/f13004eed4251c602bbe15737e8a1ecb\/preview"
+		        },
+		        "type": "video"
+		      }
+		    }
+		  }
+		}
+
+# Verify Share [/shares/{share_id}]
+## Verify Share [POST]
+This will start background job that, for a given period of time, checks if the user has shared the campaign associated with the share on their social media.
+
+If a timeout occurrs (we didn't find the content shared), a notification will be sent with the following custom payload:
+```
+{
+  "type": "share_process_cancelled",
+  "campaign_share": {
+    "id": 18,
+    "name": "Bunny",
+    "social_media": "instagram",
+    "company": {
+      "id": 1,
+      "name": "Kodfabriken Uppsala AB"
+    },
+    "payoff": {
+      "currency": "USD",
+      "value": 10
+    }
+  }
+}
+```
+
+If the content was shared by the user, the same notification as above will be sent, with the following differences:
+```
+{
+  "type": "share_process_success",
+  "campaign_share": {
+  	"start_time": "2017-10-28T04:05+00:00",
+  	"end_time": "2017-11-03T04:05+00:00",
+  }
+}
+```
+
++ Parameters
+
+	+ share_id: `18` (required, number) - The share ID to verify.
+
++ Response 400 (application/json)
+
+		[
+			"You have already shared this campaign!"
+		]
+
++ Response 200
