@@ -93,7 +93,7 @@
 ## Verify Share [POST]
 This will start background job that, for a given period of time, checks if the user has shared the campaign associated with the share on their social media.
 
-If a timeout occurrs (we didn't find the content shared), a notification will be sent with the following custom payload:
+If a timeout occurrs (we didn't find a new post shared in time, currently 15 minutes), a notification will be sent with the following custom payload:
 ```
 {
   "type": "share_process_cancelled",
@@ -121,6 +121,14 @@ If the content was shared by the user, the same notification as above will be se
   	"start_time": "2017-10-28T04:05+00:00",
   	"end_time": "2017-11-03T04:05+00:00",
   }
+}
+```
+
+If content was shared, but it's not the right content, the same notification will be sent with the following differences:
+```
+{
+	"type": "share_process_error",
+	"error": "The shared video has different aspect ratio than the one provided in the campaign."
 }
 ```
 
