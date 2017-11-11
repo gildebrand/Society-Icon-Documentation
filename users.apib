@@ -125,3 +125,25 @@ Response property `stats.value` is always in USD.
         }
 
 + Response 204
+
+
+
+
+
+## User Test Push [/users/{user_id}/testpush]
+#### User Test Push [GET]
+Sends a push notification to the user's registered devices. 
+
++ Parameters
+
+    + user_id: `1` (required, number) - User id to get active campaign for
+    + state: `share_process_error`  (optional, enum[string]) - If we should simulate a push notification used during the campaign share process.
+
+        + Members
+            + `share_process_error`
+            + `share_process_cancelled`
+            + `share_process_success`
+
++ Response 200 (application/json)
+
+        {}
